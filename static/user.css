@@ -1,0 +1,66 @@
+
+.container {
+  padding: 0;
+  margin: 0;
+}
+
+.site-footer {
+  padding: 2em 0;
+  text-align:center;
+}
+
+.site-footer p {
+  color: inherit;
+  font-size: 0.8em;
+  color: #c4c4c4;
+}
+
+#metadata div.row {
+  margin-bottom: 0.8em;
+}
+
+#metadata .row >div:first-child label {
+  display: block;
+  text-align: right;
+}
+
+#metadata .row > div:last-child {
+/*  padding-left: 0; */
+}
+
+#metadata input[type=text].form-control, #metadata textarea.form-control {
+  width: 80%;
+}
+
+#metadata textarea.form-control {
+  min-height: 75px;
+}
+
+#metadata button {
+  margin: 1em 1em 1em 0;
+}
+
+#metadata button i {
+    display: inline-block;
+    margin-right: 6px;
+}
+
+#metadata li {
+  padding-left: 1em;
+  font-size: 0.8em;
+}
+
+#metadata ol ol {
+  padding-left: 2em;
+  font-size: 1.2em;
+}
+
+#metadata ol ol > li {
+  list-style-type: lower-roman;
+}
+
+#metadata p {
+  font-size: 0.9em;
+  padding: 0.6em;
+}
+

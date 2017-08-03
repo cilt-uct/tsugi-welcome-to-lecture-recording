@@ -1,0 +1,250 @@
+{% extends "@Tsugi/Page.twig" %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{style}}"/>
+{% endblock %}
+
+{% block content %}
+<!-- Rendered from WelcomeLR.twig -->
+{% if app.tsugi.user.instructor %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3>Setup a recording series</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>If you'd like your lectures recorded:</p>
+                    <ol>
+                    <li>Complete the below form,</li>
+                    <li>accept the Ts&Cs, and</li>
+                    <li>click the <strong>Get Started</strong> button</li>
+                    </ol>
+                    <!--p><em>We'll then check if you're teaching in a venue equipped for recording and, if so, schedule the recording according to the information in SyllabusNow.</em></p--!>
+                    <p><small><em>* You will be able to manage the schedule &amp; the recordings in a later screen.</em></small></p>
+                </div>
+                <div class="col-md-4 col-md-offset-1 bg-info" style="padding: 1em; margin-top: 1em;">
+                    <p>If you don't want to record your lectures this semester, or are sure that you're not teaching in an equipped venue click the <strong>No Thanks</strong> button and we'll take this tool away.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="row">
+            <div class="col-md-9">
+                <form class="form-inline text-left" method="post" target="_self" id="metadata">
+                    <input type="hidden" name="type"  id="type" value="remove"/>
+
+                    <div class="row">
+                        <div class="col-md-4 text-right hidden-sm hidden-xs">
+                            <h4>Course Information:</h4>
+                        </div>
+                        <div class="col-sm-12 hidden-md hidden-lg">
+                            <h4>Course Information:</h4>
+                        </div>
+                    </div>
+
+                    {% if providers|length > 1 %}
+                        <div class="row">
+                            <div class="col-md-4 hidden-sm hidden-xs">
+                                <label for="presenters">Primary Course</label>
+                            </div>
+                            <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                                <label for="presenters">Primary Course</label>
+                            </div>
+                            <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                                <select class="form-control" name="provider" id="provider">
+                                    {% for prov in providers %}
+                                        <option value="{{prov}}">{{ prov }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    {% else %}
+                        <input type="hidden" name="provider" id="provider" value="{{provider}}"/>
+                    {% endif %}
+                    <div class="row">
+                        <div class="col-md-4 hidden-sm hidden-xs">
+                            <label>Visibility</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                            <label>Visibility</label>
+                        </div>
+                        <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                            <label class="radio-inline">
+                                <input type="radio" name="visibility" id="courseClosed" value="closed" checked>
+                                This course only
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="visibility" id="coursePublic" value="public">
+                                Public
+                            </label>
+                        </div>
+                    </div>
+                    <!--div class="row">
+                        <div class="col-md-4 hidden-sm hidden-xs">
+                            <label for="subject">Subject</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                            <label for="subject">Subject</label>
+                        </div>
+                        <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                            <input type="text" class="form-control" name="subject" id="subject" value=""/>
+                        </div>
+                    </div-->
+                    <div class="row">
+                        <div class="col-md-4 hidden-sm hidden-xs">
+                            <label for="presenters">Presenter(s)</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                            <label for="presenters">Presenter(s)</label>
+                        </div>
+                        <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                            <textarea class="form-control" name="presenters" id="presenters" placeholder="Presenters for this course, one per line.">{{user}}
+</textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 hidden-sm hidden-xs">
+                            <label for="presenters">Send Notifications</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                            <label for="presenters">Send Notifications</label>
+                        </div>
+                        <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                            <textarea class="form-control" name="notifications" id="notifications" placeholder="Email notification list for this course, one per line.">{{email}}
+</textarea>
+                        </div>
+                    </div>
+                    <div class="row terms">
+                        <div class="col-md-4 hidden-sm hidden-xs">
+                            <label>Terms and Conditions</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                            <label>Terms and Conditions</label>
+                        </div>
+                        <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                            <!--ol>
+                                <li>Timetable scheduling is achieved via a lookup of the lecture schedule on SyllabusNow. CILT take no responsibility for confirming that the recording schedule is correct.</li>
+                                <li>I/We, the listed presenters, consent to the recording of my lectures for the course in multimedia format including audio, projected slides or other materials, and video.</li>
+                                <li>As an employee of the University of Cape Town, I understand that in terms of the UCT Intellectual Property Policy, UCT assigns copyright in recordings of my lectures to me, while retaining a perpetual, royalty-free, nonexclusive licence to use, copy and adapt such materials within UCT for the purposes of teaching and or research.</li>
+                                <li>I/We hereby assign all performance rights in the recordings to the University of Cape Town</li>
+                                <li>I/We, as the requester of lecture recording undertake to:
+                                    <ol>
+                                        <li>seek and gain consent from alternative/guest lecturers on the course</li>
+                                        <li>inform students and other Interest and Affected parties that the lectures are being recorded</li>
+                                        <li>ensure that all material recorded is under the copyright of Interlectual Prroperty ownership of the presenter, or permission from the IP owner has been granted</li>
+                                    </ol>
+                                </li>
+                            </ol-->
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="terms" name="terms" value="accept" /> 
+                                I agree with the terms and conditions.
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-11 col-sm-offset-1">
+                            <button id="btnAccept" class="btn btn-success disabled" disabled="true" type="button">
+                                <i class="fa fa-check"></i>
+                                Get Started
+                            </button>
+                            <button id="btnReject" class="btn btn-default" type="button">
+                                No Thanks
+                            </button>
+                            <span id="info" class="text-info" style="display:none;"><small>This might take a couple of seconds.</small></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-11 col-sm-offset-1" id="message"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-push-3 col-xs-12">
+                    <p>Powered by Tsugi. </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+    <script src="{{path}}/js/moment.min.js"></script>
+    <script>
+    $(function() {
+        var timeout = null;
+
+        function hideHelp() {
+            clearTimeout(timeout);
+            $('#info').hide();
+        }
+        function showError(a) {
+            $('#' + a).html('<i class="fa fa-exclamation"></i> Error').addClass('disabled').attr('disabled', true);
+            $('#message').html('<p class="bg-danger">An error occured while performing this action, please contact <a href="mailto:help@vula.uct.ac.za?subject=Vula - Please help with: Lecture Recording Setup">help@vula.uct.ac.za</a><br/> or call 021-650-5500 weekdays 8:30 - 17:00.</p>');
+        }
+        function doPost(a, b, text, type) {
+            $('#' + a).html('<i class="fa fa-cog fa-spin"></i>' + text);
+            $('#' + b).addClass('disabled').attr('disabled', true).hide();
+            timeout = setTimeout(function(){ $('#info').show(); }, 1200);
+
+            var contributor = $('#presenters').val().trim().replace(/\r?\n/g, ', ');
+            var notification = $('#notifications').val().trim().replace(/\r?\n/g, ', ');
+
+            var data = { 
+                "type": type,
+                "terms": ($('#terms').is(':checked') ? "accept" : "rejected"),
+                "visibility": ($('#coursePublic').is(':checked') ? "Public" : "Course"),
+                "subject": '',
+                "contributor": (contributor.endsWith(', ') ? contributor.substring(0, contributor.length-2) : contributor),
+                "course": $('#provider').val(),
+                "notification": (notification.endsWith(', ') ? notification.substring(0, notification.length-2) : notification)
+            }
+
+            var jqxhr = $.post('{{submit}}', data, function(result) {
+                hideHelp();
+                console.log(result['done'] +' '+ (result['done'] === 1));
+                if (result['done'] === 1) {
+                    $('#' + a).html('<i class="fa fa-check"></i> Refreshing page ...');
+
+                    // post refresh
+                    parent.postMessage(JSON.stringify({ subject: "lti.pageRefresh" }), "*");
+                } else {
+                    showError(a);
+                }
+            }, 'json')
+            .fail(function() {
+                hideHelp();
+                showError(a);
+            })
+            .always(function() {
+                hideHelp();
+            });
+        }
+
+        $('#terms').click( function(){
+            if( $(this).is(':checked')) {
+                $('#btnAccept').removeClass("disabled").attr("disabled", false);
+            } else {
+                $('#btnAccept').addClass("disabled").attr("disabled", true);
+            }   
+        });
+        $('#btnAccept').click( function(event){
+            event.preventDefault();
+            doPost('btnAccept', 'btnReject', 'Setting up lecture recording...', 'create');
+        });
+        $('#btnReject').click( function(event){
+            event.preventDefault();
+            doPost('btnReject', 'btnAccept', 'Removing lecture recording...', 'remove');
+        });
+    });
+    </script>
+{% endblock %}
