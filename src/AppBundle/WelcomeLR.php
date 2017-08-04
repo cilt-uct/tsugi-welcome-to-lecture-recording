@@ -65,6 +65,10 @@ class WelcomeLR {
             ,'msg'  => 'Application failure.'
         ), $_POST);
 
+        if ($result['course'] == 'none') {
+            $result['course'] = '';
+        }
+
         $out = array(
             'done' => 0
             ,'msg'  => 'Application failure.'
