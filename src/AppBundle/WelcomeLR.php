@@ -65,6 +65,11 @@ class WelcomeLR {
             ,'msg'  => 'Application failure.'
         ), $_POST);
 
+        $out = array(
+            'done' => 0
+            ,'msg'  => 'Application failure.'
+        );
+
         if ($app['tsugi']->user->instructor) {
 
             $cmd = NULL;
@@ -88,18 +93,23 @@ class WelcomeLR {
                 $result['out'] = json_decode($result['raw']);
 
                 if (json_last_error() === JSON_ERROR_NONE) { 
-                    $result['msg'] = $result['out']->out;
-                    $result['done'] = $result['out']->success;
+                    $out['msg'] = $result['out']->out;
+                    $out['done'] = $result['out']->success;
                 } else { 
-                    $result['done'] = 0;
-                    $result['msg'] = json_last_error_msg();
+                    $out['done'] = 0;
+                    $out['msg'] = json_last_error_msg();
                 } 
             }
+
+            $filename = $CFG->dirroot ."/". $CFG->getPWD('index.php') ."/tmp/". $result['siteid'] .".json";
+            $fp = fopen($filename, 'w');
+            fwrite($fp, json_encode($result));
+            fclose($fp);
         } else {
-            $result['done'] = 0;
-            $result['msg']  = 'Must be an instructor to complete this operation.';
+            $out['done'] = 0;
+            $out['msg']  = 'Must be an instructor to complete this operation.';
         }
 
-        return json_encode($result);
+        return json_encode($out);
     }
 }

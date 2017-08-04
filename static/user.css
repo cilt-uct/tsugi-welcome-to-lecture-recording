@@ -24,12 +24,12 @@
   text-align: right;
 }
 
-#metadata .row > div:last-child {
-/*  padding-left: 0; */
-}
-
 #metadata input[type=text].form-control, #metadata textarea.form-control {
   width: 80%;
+}
+
+#metadata select.form-control {
+  width: 200px;
 }
 
 #metadata textarea.form-control {
