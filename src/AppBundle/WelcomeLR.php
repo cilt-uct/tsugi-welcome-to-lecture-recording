@@ -52,7 +52,8 @@ class WelcomeLR {
         global $CFG, $PDOX;
 
         $result = array_merge(array( 
-            'instructor' => $app['tsugi']->user->instructor
+            'ext_sakai_server' => $app['tsugi']->context->launch->ltiRawParameter('ext_sakai_server','none')
+            ,'instructor' => $app['tsugi']->user->instructor
             ,'siteid' => $app['tsugi']->context->launch->ltiRawParameter('context_id','none')
             ,'ownerEid' => $app['tsugi']->context->launch->ltiRawParameter('lis_person_sourcedid','none') 
             ,'ownerEmail' => $app['tsugi']->user->email
@@ -87,7 +88,7 @@ class WelcomeLR {
                     $cmd = 'sudo /usr/local/sakaiscripts/jira/tsugi-oc-setup.pl '. $filename;
                     break;
                 case "remove":
-                    $cmd = 'sudo /usr/local/sakaiscripts/jira/tsugi-oc-remove.pl '. $result['siteid'];
+                    $cmd = 'sudo /usr/local/sakaiscripts/jira/tsugi-oc-remove.pl '. $result['ext_sakai_server'] .' '. $result['siteid'];
                 default: break;
             }
 
