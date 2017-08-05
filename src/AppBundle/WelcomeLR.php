@@ -60,7 +60,7 @@ class WelcomeLR {
             ,'organizer' => $app['tsugi']->user->displayname
             ,'language' => 'eng'
             ,'title' => $app['tsugi']->context->title
-            ,'description' => 'Recordings for '. $app['tsugi']->context->title
+            ,'description' => $app['tsugi']->context->title
             ,'publisher' => 'University of Cape Town'
             ,'done' => 0
             ,'msg'  => 'Application failure.'
