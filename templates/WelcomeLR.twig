@@ -8,7 +8,6 @@
 <!-- Rendered from WelcomeLR.twig -->
 {% if app.tsugi.user.instructor %}
     <section>
-        <div class="container">
             <div class="row">
                 <div class="col-xs-12">
                     <h3>Set up a new recording series</h3>
@@ -28,7 +27,6 @@
                     <p>If you don't want to record lectures for this course, click the <strong>No Thanks</strong> button to remove this page.</p>
                 </div>
             </div>
-        </div>
     </section>
     <section>
         <div class="row">
@@ -51,22 +49,22 @@
                         <div class="col-md-3 hidden-sm hidden-xs">
                             <label>Series Organizer</label>
                         </div>
-                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                        <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
                             <label>Series Organizer</label>
                         </div>
-                        <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                        <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                             <input type="text" name="organizer" id="organizer" disabled="true" class="form-control disabled" value="{{user}} ({{email}})"/>
                         </div>
                     </div>
                     {% if providers|length > 1 %}
                         <div class="row">
-                            <div class="col-md-4 hidden-sm hidden-xs">
+                            <div class="col-md-3 hidden-sm hidden-xs">
                                 <label for="presenters">Primary Course</label>
                             </div>
-                            <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                            <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
                                 <label for="presenters">Primary Course</label>
                             </div>
-                            <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                            <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                                 <select class="form-control" name="provider" id="provider">
                                     {% for prov in providers %}
                                         <option value="{{prov}}">{{ prov }}</option>
@@ -81,10 +79,10 @@
                         <div class="col-md-3 hidden-sm hidden-xs">
                             <label>Publish recordings to</label>
                         </div>
-                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                        <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
                             <label>Publish recordings to</label>
                         </div>
-                        <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                        <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                             <label class="radio-inline">
                                 <input type="radio" name="visibility" id="courseClosed" value="closed" checked>
                                 This Vula site only
@@ -99,10 +97,10 @@
                         <div class="col-md-3 hidden-sm hidden-xs">
                             <label for="subject">Subject</label>
                         </div>
-                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                        <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
                             <label for="subject">Subject</label>
                         </div>
-                        <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                        <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                             <input type="text" class="form-control" name="subject" id="subject" value=""/>
                         </div>
                     </div-->
@@ -110,10 +108,10 @@
                         <div class="col-md-3 hidden-sm hidden-xs">
                             <label for="presenters">Presenter(s)</label>
                         </div>
-                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                        <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
                             <label for="presenters">Presenter(s)</label>
                         </div>
-                        <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                        <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                             <textarea class="form-control" name="presenters" id="presenters" placeholder="Presenters for this course, one per line.">{{user}}
 </textarea>
                         </div>
@@ -122,10 +120,10 @@
                         <div class="col-md-3 hidden-sm hidden-xs">
                             <label for="presenters">Email Notifications</label>
                         </div>
-                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                        <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
                             <label for="presenters">Email Notifications</label>
                         </div>
-                        <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                        <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                             <textarea class="form-control" name="notifications" id="notifications" placeholder="Additional email addresses to receive scheduling notifications for this series"></textarea>
                         </div>
                     </div>
@@ -133,10 +131,10 @@
                         <div class="col-md-3 hidden-sm hidden-xs">
                             <label>My Responsibilities</label>
                         </div>
-                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                        <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
                             <label>My Responsibilities</label>
                         </div>
-                        <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                        <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                             <label class="checkbox-inline">
                                 <input type="checkbox" id="terms" name="terms" value="accept" /> 
                                 As the Series Organizer, I undertake to: (1) <a href="http://www.cilt.uct.ac.za/cilt/lecture-recording" target="_blank">obtain recording consent</a> in advance from all presenters for all scheduled recordings, and (2) inform students and other participants that sessions are recorded.
@@ -156,7 +154,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-11 col-sm-offset-1" id="message"></div>
+                        <div class="col-xs-12" id="message"></div>
                     </div>
                 </form>
             </div>

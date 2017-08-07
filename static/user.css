@@ -3,6 +3,10 @@ section > div.row {
   margin-right: 0px;
 }
 
+section h3 {
+  margin-top: 0px;
+}
+
 .container {
   padding: 0;
   margin: 0;
@@ -21,6 +25,10 @@ section > div.row {
 
 #metadata div.row {
   margin-bottom: 0.8em;
+}
+
+#metadata div.col-md-3 label {
+  margin-top: 0.5em;
 }
 
 #metadata .row >div:first-child label {
