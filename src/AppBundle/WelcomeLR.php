@@ -41,8 +41,7 @@ class WelcomeLR {
         $context['course_title'] = $app['tsugi']->context->title;
         $context['email'] = $app['tsugi']->user->email;
         $context['user'] = $app['tsugi']->user->displayname;
-        
-        $p = $CFG->dbprefix;
+        $context['username'] = $app['tsugi']->context->launch->ltiRawParameter('lis_person_sourcedid', $app['tsugi']->user->id);         
 
         return $app['twig']->render('WelcomeLR.twig', $context);
     }

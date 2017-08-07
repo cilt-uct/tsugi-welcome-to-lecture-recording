@@ -11,22 +11,21 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    <h3>Setup a recording series</h3>
+                    <h3>Set up a new recording series</h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <p>If you'd like your lectures recorded:</p>
                     <ol>
-                    <li>Complete the below form,</li>
-                    <li>accept the Ts&Cs, and</li>
+                    <li>Complete the form below</li>
+                    <li>click the checkbox to accept the responsibilities of a series organizer</li>
                     <li>click the <strong>Get Started</strong> button</li>
                     </ol>
-                    <!--p><em>We'll then check if you're teaching in a venue equipped for recording and, if so, schedule the recording according to the information in SyllabusNow.</em></p--!>
                     <p><small><em>* You will be able to manage the schedule &amp; the recordings in a later screen.</em></small></p>
                 </div>
                 <div class="col-md-4 col-md-offset-1 bg-info" style="padding: 1em; margin-top: 1em;">
-                    <p>If you don't want to record your lectures this semester, or are sure that you're not teaching in an equipped venue click the <strong>No Thanks</strong> button and we'll take this tool away.</p>
+                    <p>If you don't want to record lectures for this course, click the <strong>No Thanks</strong> button to remove this page.</p>
                 </div>
             </div>
         </div>
@@ -37,15 +36,28 @@
                 <form class="form-inline text-left" method="post" target="_self" id="metadata">
                     <input type="hidden" name="type"  id="type" value="remove"/>
 
+		<!--
                     <div class="row">
-                        <div class="col-md-4 text-right hidden-sm hidden-xs">
-                            <h4>Course Information:</h4>
+                        <div class="col-md-3 text-right hidden-sm hidden-xs">
+                            <h4>Series Information:</h4>
                         </div>
                         <div class="col-sm-12 hidden-md hidden-lg">
-                            <h4>Course Information:</h4>
+                            <h4>Series Information:</h4>
                         </div>
                     </div>
+		-->
 
+		    <div class="row" style="margin-top: 1em;">
+                        <div class="col-md-3 hidden-sm hidden-xs">
+                            <label>Series Organizer</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
+                            <label>Series Organizer</label>
+                        </div>
+                        <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
+                            <input type="text" name="organizer" id="organizer" disabled="true" class="form-control disabled" value="{{user}} ({{email}})"/>
+                        </div>
+                    </div>
                     {% if providers|length > 1 %}
                         <div class="row">
                             <div class="col-md-4 hidden-sm hidden-xs">
@@ -66,25 +78,25 @@
                         <input type="hidden" name="provider" id="provider" value="{{provider}}"/>
                     {% endif %}
                     <div class="row">
-                        <div class="col-md-4 hidden-sm hidden-xs">
-                            <label>Visibility</label>
+                        <div class="col-md-3 hidden-sm hidden-xs">
+                            <label>Publish recordings to</label>
                         </div>
                         <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
-                            <label>Visibility</label>
+                            <label>Publish recordings to</label>
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
                             <label class="radio-inline">
                                 <input type="radio" name="visibility" id="courseClosed" value="closed" checked>
-                                This course only
+                                This Vula site only
                             </label>
                             <label class="radio-inline">
                                 <input type="radio" name="visibility" id="coursePublic" value="public">
-                                Public
+                                Anyone (public)
                             </label>
                         </div>
                     </div>
                     <!--div class="row">
-                        <div class="col-md-4 hidden-sm hidden-xs">
+                        <div class="col-md-3 hidden-sm hidden-xs">
                             <label for="subject">Subject</label>
                         </div>
                         <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
@@ -95,7 +107,7 @@
                         </div>
                     </div-->
                     <div class="row">
-                        <div class="col-md-4 hidden-sm hidden-xs">
+                        <div class="col-md-3 hidden-sm hidden-xs">
                             <label for="presenters">Presenter(s)</label>
                         </div>
                         <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
@@ -107,45 +119,32 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4 hidden-sm hidden-xs">
-                            <label for="presenters">Send Notifications</label>
+                        <div class="col-md-3 hidden-sm hidden-xs">
+                            <label for="presenters">Email Notifications</label>
                         </div>
                         <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
-                            <label for="presenters">Send Notifications</label>
+                            <label for="presenters">Email Notifications</label>
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
-                            <textarea class="form-control" name="notifications" id="notifications" placeholder="Email notification list for this course, one per line."></textarea>
+                            <textarea class="form-control" name="notifications" id="notifications" placeholder="Additional email addresses to receive scheduling notifications for this series"></textarea>
                         </div>
                     </div>
                     <div class="row terms">
-                        <div class="col-md-4 hidden-sm hidden-xs">
-                            <label>Terms and Conditions</label>
+                        <div class="col-md-3 hidden-sm hidden-xs">
+                            <label>My Responsibilities</label>
                         </div>
                         <div class="col-xs-12 col-sm-11 col-sm-offset-1 hidden-md hidden-lg">
-                            <label>Terms and Conditions</label>
+                            <label>My Responsibilities</label>
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-11 col-sm-offset-1 col-md-offset-0">
-                            <!--ol>
-                                <li>Timetable scheduling is achieved via a lookup of the lecture schedule on SyllabusNow. CILT take no responsibility for confirming that the recording schedule is correct.</li>
-                                <li>I/We, the listed presenters, consent to the recording of my lectures for the course in multimedia format including audio, projected slides or other materials, and video.</li>
-                                <li>As an employee of the University of Cape Town, I understand that in terms of the UCT Intellectual Property Policy, UCT assigns copyright in recordings of my lectures to me, while retaining a perpetual, royalty-free, nonexclusive licence to use, copy and adapt such materials within UCT for the purposes of teaching and or research.</li>
-                                <li>I/We hereby assign all performance rights in the recordings to the University of Cape Town</li>
-                                <li>I/We, as the requester of lecture recording undertake to:
-                                    <ol>
-                                        <li>seek and gain consent from alternative/guest lecturers on the course</li>
-                                        <li>inform students and other Interest and Affected parties that the lectures are being recorded</li>
-                                        <li>ensure that all material recorded is under the copyright of Interlectual Prroperty ownership of the presenter, or permission from the IP owner has been granted</li>
-                                    </ol>
-                                </li>
-                            </ol-->
                             <label class="checkbox-inline">
                                 <input type="checkbox" id="terms" name="terms" value="accept" /> 
-                                I agree with the terms and conditions.
+                                As the Series Organizer, I undertake to: (1) <a href="http://www.cilt.uct.ac.za/cilt/lecture-recording" target="_blank">obtain recording consent</a> in advance from all presenters for all scheduled recordings, and (2) inform students and other participants that sessions are recorded.
                             </label>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-11 col-sm-offset-1">
+                        <div class="col-xs-12">
                             <button id="btnAccept" class="btn btn-success disabled" disabled="true" type="button">
                                 <i class="fa fa-check"></i>
                                 Get Started
@@ -163,6 +162,8 @@
             </div>
         </div>
     </section>
+
+<!--
     <footer class="site-footer">
         <div class="container">
             <div class="row">
@@ -172,6 +173,7 @@
             </div>
         </div>
     </footer>
+-->
 
 {% endif %}
 {% endblock %}
