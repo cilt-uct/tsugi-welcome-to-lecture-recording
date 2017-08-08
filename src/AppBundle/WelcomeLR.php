@@ -52,6 +52,7 @@ class WelcomeLR {
 
         $result = array_merge(array( 
             'ext_sakai_server' => $app['tsugi']->context->launch->ltiRawParameter('ext_sakai_server','none')
+            ,'ext_sakai_serverid' => $app['tsugi']->context->launch->ltiRawParameter('ext_sakai_serverid','none') 
             ,'instructor' => $app['tsugi']->user->instructor
             ,'siteid' => $app['tsugi']->context->launch->ltiRawParameter('context_id','none')
             ,'ownerEid' => $app['tsugi']->context->launch->ltiRawParameter('lis_person_sourcedid','none') 
