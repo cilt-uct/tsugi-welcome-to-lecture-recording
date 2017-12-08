@@ -20,9 +20,8 @@ class WelcomeLR {
 	    $providers = $app['tsugi']->context->launch->ltiRawParameter('lis_course_section_sourcedid','none');
         $context_id = $app['tsugi']->context->launch->ltiRawParameter('context_id','none');
 
-    	$path = $CFG->getPWD('index.php');
-    	$context['style'] = $CFG->wwwroot .'/'. $path .'/static/user.css';
-	    $context['submit'] = addSession($CFG->wwwroot .'/'. $path .'/index.php');
+    	$context['style'] = $CFG->getCurrentFileUrl('static/user.css');
+	    $context['submit'] = addSession($CFG->getCurrentFileUrl('index.php'));
         $context['providers'] = array();
         $context['provider'] = 'none';
         
@@ -36,7 +35,7 @@ class WelcomeLR {
                 $context['providers'] = $list;
             }
         }
-
+        
         $context['path'] = $CFG->staticroot;
         $context['course_title'] = $app['tsugi']->context->title;
         $context['email'] = $app['tsugi']->user->email;
@@ -78,17 +77,17 @@ class WelcomeLR {
         if ($app['tsugi']->user->instructor) {
 
             $cmd = NULL;
-            $filename = $CFG->dirroot ."/". $CFG->getPWD('index.php') ."/tmp/". $result['siteid'] .".json";
+            $filename = realpath('tmp') ."/". $result['siteid'] .".json";
             $fp = fopen($filename, 'w');
             fwrite($fp, json_encode($result));
             fclose($fp);
 
             switch ($result['type']) {
                case "create":
-                    $cmd = 'sudo /usr/local/sakaiscripts/jira/tsugi-oc-setup.pl '. $filename;
+                    $cmd = $app['script-add'] .' '. $filename;
                     break;
                 case "remove":
-                    $cmd = 'sudo /usr/local/sakaiscripts/jira/tsugi-oc-remove.pl '. $result['ext_sakai_server'] .' '. $result['siteid'];
+                    $cmd = $app['script-remove'] .' '. $result['ext_sakai_server'] .' '. $result['siteid'];
                 default: break;
             }
 
@@ -100,13 +99,12 @@ class WelcomeLR {
                 if (json_last_error() === JSON_ERROR_NONE) { 
                     $out['msg'] = $result['out']->out;
                     $out['done'] = $result['out']->success;
-                } else { 
+                } else {
                     $out['done'] = 0;
                     $out['msg'] = json_last_error_msg();
                 } 
             }
 
-            $filename = $CFG->dirroot ."/". $CFG->getPWD('index.php') ."/tmp/". $result['siteid'] .".json";
             $fp = fopen($filename, 'w');
             fwrite($fp, json_encode($result));
             fclose($fp);
