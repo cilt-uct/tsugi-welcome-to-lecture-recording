@@ -76,3 +76,10 @@ section h3 {
   padding: 0.6em;
 }
 
+.container_iframe .bg-info {
+  background-color: rgba(117,202,235, 0.6);
+}
+
+.container_iframe .bg-info p {
+  color: #333;
+}
