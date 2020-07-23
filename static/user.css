@@ -40,6 +40,13 @@ section h3 {
   width: 80%;
 }
 
+#metadata .checkbox input[type=checkbox],
+#metadata .checkbox-inline input[type=checkbox],
+#metadata .radio input[type=radio],
+#metadata .radio-inline input[type=radio] {
+  margin-top: 7px;
+}
+
 #metadata select.form-control {
   width: 200px;
 }
