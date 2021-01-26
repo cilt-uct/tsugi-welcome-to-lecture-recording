@@ -49,23 +49,23 @@ if ($USER->instructor) {
         default: break;
     }
 
-    // if (!is_null($cmd)) {
-    //     $result['cmd'] = $cmd; 
-    //     $result['raw'] = shell_exec($cmd);
-    //     $result['out'] = json_decode($result['raw']);
+    if (!is_null($cmd)) {
+        $result['cmd'] = $cmd; 
+        $result['raw'] = shell_exec($cmd);
+        $result['out'] = json_decode($result['raw']);
 
-    //     if (json_last_error() === JSON_ERROR_NONE) { 
-    //         $out['msg'] = $result['out']->out;
-    //         $out['done'] = $result['out']->success;
-    //     } else {
-    //         $out['done'] = 0;
-    //         $out['msg'] = json_last_error_msg();
-    //     } 
-    // }
+        if (json_last_error() === JSON_ERROR_NONE) { 
+            $out['msg'] = $result['out']->out;
+            $out['done'] = $result['out']->success;
+        } else {
+            $out['done'] = 0;
+            $out['msg'] = json_last_error_msg();
+        } 
+    }
 
-    // $fp = fopen($filename, 'w');
-    // fwrite($fp, json_encode($result));
-    // fclose($fp);
+    $fp = fopen($filename, 'w');
+    fwrite($fp, json_encode($result));
+    fclose($fp);
 } else {
     $out['done'] = 0;
     $out['msg']  = 'Must be an instructor to complete this operation.';
