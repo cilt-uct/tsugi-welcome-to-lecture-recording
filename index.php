@@ -1,18 +1,15 @@
 <?php
-require_once "../config.php";
+require_once('../config.php');
 include 'tool-config.php';
 
-use \Tsugi\Core\Settings;
 use \Tsugi\Core\LTIX;
+use \Tsugi\Core\Settings;
 
 $launch = LTIX::requireData();
-$app = new \Tsugi\Silex\Application($launch);
 
-$app['debug'] = $tool['debug'];
-$app['script-add'] = $tool['script-add'];
-$app['script-remove'] = $tool['script-remove'];
-
-$app->get('/', 'AppBundle\\WelcomeLR::get')->bind('main');
-$app->post('/', 'AppBundle\\WelcomeLR::post');
-
-$app->run();
+$menu = false; // We are not using a menu
+if ( $USER->instructor ) {
+    header( 'Location: '.addSession('instructor-home.php') ) ;
+} else {
+    header( 'Location: '.addSession('student-home.php') ) ;
+}

@@ -1,73 +1,96 @@
-{% extends "@Tsugi/Page.twig" %}
+<?php
+require_once('../config.php');
+include 'tool-config.php';
 
-{% block head %}
-    <link rel="stylesheet" type="text/css" href="{{style}}"/>
-    <script type="text/javascript">
-    if (!String.prototype.endsWith) {
-        String.prototype.endsWith = function(searchStr, Position) {
-            // This works much better than >= because
-            // it compensates for NaN:
-            if (!(Position < this.length))
-                Position = this.length;
-            else
-                Position |= 0; // round position
-            return this.substr(Position - searchStr.length,
-                                searchStr.length) === searchStr;
-        };
-    }
-    if (!String.prototype.startsWith) {
-            String.prototype.startsWith = function(searchString, position){
-            return this.substr(position || 0, searchString.length) === searchString;
-        };
-    }
-    </script>
-{% endblock %}
+use \Tsugi\Core\LTIX;
 
-{% block content %}
-<!-- Rendered from WelcomeLR.twig -->
-{% if app.tsugi.user.instructor %}
+// Retrieve the launch data if present
+$LAUNCH = LTIX::requireData();
+
+$menu = false; // We are not using a menu
+
+// Start of the output
+$OUTPUT->header();
+
+include("tool-header.html");
+
+$OUTPUT->bodyStart();
+
+$OUTPUT->topNav($menu);
+
+if (!$USER->instructor) {
+    header('Location: ' . addSession('student-home.php'));
+}
+
+    $context = array();
+    $providers  = $LAUNCH->ltiRawParameter('lis_course_section_sourcedid','none');
+    $context_id = $LAUNCH->ltiRawParameter('context_id','none');
+
+    $context['providers'] = array();
+    $context['provider'] = 'none';
+    
+    if ($providers != $context_id) {
+        // So we might have some providers to show
+        $list = explode('+', $providers);
+            
+        if (count($list) == 1) {
+            $context['provider'] = $list[0];
+        } else {
+            $context['providers'] = $list;
+        }
+    }
+    
+    // $context['course_title'] = $app['tsugi']->context->title;
+    $context['email'] = $USER->email;
+    $context['user'] = $USER->displayname;
+    $context['submit'] = addSession( str_replace("\\","/",$CFG->getCurrentFileUrl('process.php')) );
+    
+    if ($tool['debug']) {
+        echo '<pre>'; print_r($context); echo '</pre>';
+    }
+?>
     <section>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h3>Set up a new recording series</h3>
-                </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>Set up a new recording series</h3>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <p>If you'd like your lectures recorded:</p>
-                    <ol>
-                    <li>Complete the form below.</li>
-                    <li>Click the checkbox to accept the responsibilities of a series organizer.</li>
-                    <li>Click the <strong>Get Started</strong> button.</li>
-                    <li>Create and manage the recording schedule.</li>
-                    </ol>
-                    <p>
-                      Need more info <span class="glyphicon glyphicon-question-sign"></span>
-        		<a href="https://vula.uct.ac.za/access/content/public/help/HowTo_SetupLectureRecording.pdf" title="How to set up my lecture recordings" target="_blank">Setup guide</a>,
-			<a href="http://ictsapps.uct.ac.za/lectureRecording.php" target="_blank" title="Venues equipped for lecture recording">venue information</a>,
-			<a href="http://www.cilt.uct.ac.za/cilt/lecture-recording/" target="_blank" title="More about lecture recording at UCT">lecture recording at UCT</a>.
-                    </p>
-                </div>
-                <div class="col-md-4 col-md-offset-1 bg-info" style="padding: 1em; margin-top: 1em;">
-                    <p>If you don't want to record lectures for this course, click the <strong>No Thanks</strong> button to remove this page.</p>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p>If you'd like your lectures recorded:</p>
+                <ol>
+                <li>Complete the form below.</li>
+                <li>Click the checkbox to accept the responsibilities of a series organizer.</li>
+                <li>Click the <strong>Get Started</strong> button.</li>
+                <li>Create and manage the recording schedule.</li>
+                </ol>
+                <p>
+                    Need more info <span class="glyphicon glyphicon-question-sign"></span>
+                    <a href="https://vula.uct.ac.za/access/content/public/help/HowTo_SetupLectureRecording.pdf" title="How to set up my lecture recordings" target="_blank">Setup guide</a>,
+                    <a href="http://ictsapps.uct.ac.za/lectureRecording.php" target="_blank" title="Venues equipped for lecture recording">venue information</a>,
+                    <a href="http://www.cilt.uct.ac.za/cilt/lecture-recording/" target="_blank" title="More about lecture recording at UCT">lecture recording at UCT</a>.
+                </p>
             </div>
+            <div class="col-md-4 col-md-offset-1 bg-info" style="padding: 1em; margin-top: 1em;">
+                <p>If you don't want to record lectures for this course, click the <strong>No Thanks</strong> button to remove this page.</p>
+            </div>
+        </div>
     </section>
     <section>
         <div class="row">
             <div class="col-md-9">
                 <form class="form-inline text-left" method="post" target="_self" id="metadata">
                     <input type="hidden" name="type"  id="type" value="remove"/>
-		<!--
-                    <div class="row">
+		
+                    <!--div class="row">
                         <div class="col-md-3 text-right hidden-sm hidden-xs">
                             <h4>Series Information:</h4>
                         </div>
                         <div class="col-sm-12 hidden-md hidden-lg">
                             <h4>Series Information:</h4>
                         </div>
-                    </div>
-		-->
+                    </div-->
+
 		            <div class="row" style="margin-top: 1em;">
                         <div class="col-md-3 hidden-sm hidden-xs">
                             <label>Series Organizer</label>
@@ -76,10 +99,13 @@
                             <label>Series Organizer</label>
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
-                            <input type="text" name="organizer" id="organizer" disabled="true" class="form-control disabled" value="{{user}} ({{email}})"/>
+                            <input type="text" name="organizer" id="organizer" disabled="true" class="form-control disabled" value="<?= $context['email'] ?> (<?= $context['user'] ?>)"/>
                         </div>
                     </div>
-                    {% if providers|length > 1 %}
+                <?php
+
+                    if (count($context['providers']) > 1) {
+                ?>
                         <div class="row">
                             <div class="col-md-3 hidden-sm hidden-xs">
                                 <label for="presenters">Primary Course</label>
@@ -89,15 +115,19 @@
                             </div>
                             <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                                 <select class="form-control" name="provider" id="provider">
-                                    {% for prov in providers %}
-                                        <option value="{{prov}}">{{ prov }}</option>
-                                    {% endfor %}
+                                <?php
+                                    foreach ($context['providers'] as $p) {
+                                        print "<option value=\"". $p ."\">". $p ."</option>";
+                                    }
+                                ?>
                                 </select>
                             </div>
                         </div>
-                    {% else %}
-                        <input type="hidden" name="provider" id="provider" value="{{provider}}"/>
-                    {% endif %}
+                <?php
+                    } else { 
+                        print "<input type=\"hidden\" name=\"provider\" id=\"provider\" value=\"". $context['provider'] ."\"/>";
+                    }
+                ?>
                     <div class="row">
                         <div class="col-md-3 hidden-sm hidden-xs">
                             <label>Publish recordings to</label>
@@ -135,7 +165,7 @@
                             <label for="presenters">Presenter(s)</label>
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
-                            <textarea class="form-control" name="presenters" id="presenters" placeholder="Presenters for this course, one per line.">{{user}}
+                            <textarea class="form-control" name="presenters" id="presenters" placeholder="Presenters for this course, one per line."><?= $context['user'] ?>
                             </textarea>
                         </div>
                     </div>
@@ -183,24 +213,13 @@
             </div>
         </div>
     </section>
-<!--
-    <footer class="site-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6 col-sm-push-3 col-xs-12">
-                    <p>Powered by Tsugi. </p>
-                </div>
-            </div>
-        </div>
-    </footer>
--->
+<?php
 
-{% endif %}
-{% endblock %}
+$OUTPUT->footerStart();
 
-{% block footer %}
-    <script src="{{path}}/js/moment.min.js"></script>
-    <script>
+?>
+<!-- Our main javascript file for tool functions -->
+<script>
     $(function() {
         var timeout = null;
 
@@ -230,7 +249,7 @@
                 "notification": (notification.endsWith(', ') ? notification.substring(0, notification.length-2) : notification)
             }
 
-            var jqxhr = $.post('{{submit}}', data, function(result) {
+            var jqxhr = $.post('<?= $context['submit'] ?>', data, function(result) {
                 hideHelp();
                 console.log(result['done'] +' '+ (result['done'] === 1));
                 if (result['done'] === 1) {
@@ -267,5 +286,7 @@
             doPost('btnReject', 'btnAccept', 'Removing lecture recording...', 'remove');
         });
     });
-    </script>
-{% endblock %}
+</script>
+<?php
+
+$OUTPUT->footerEnd();
