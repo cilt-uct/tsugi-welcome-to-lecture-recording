@@ -2,7 +2,7 @@
 
 A page to introduce lecture recording to a course site and help with the initial configuration.
 
-To execute scripts add the folloign to visuod:
+To execute scripts add the following to visudo:
 ```
 wwwrun ALL=(ALL) NOPASSWD: /usr/local/scripts/tsugi/tsugi-oc-remove.pl
 wwwrun ALL=(ALL) NOPASSWD: /usr/local/scripts/tsugi/tsugi-oc-setup.pl
