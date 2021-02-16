@@ -4,6 +4,8 @@ include 'tool-config.php';
 
 use \Tsugi\Core\LTIX;
 
+header('Content-Type: application/json');
+
 // Retrieve the launch data if present
 $LAUNCH = LTIX::requireData();
 
@@ -71,4 +73,4 @@ if ($USER->instructor) {
     $out['msg']  = 'Must be an instructor to complete this operation.';
 }
 
-return json_encode($out);
+echo json_encode($out);
