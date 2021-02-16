@@ -23,6 +23,7 @@ $result = array_merge(array(
     ,'publisher' => 'University of Cape Town'
     ,'done' => 0
     ,'msg'  => 'Application failure.'
+    ,'version' => '2.0'
 ), $_POST);
 
 if ($result['course'] == 'none') {
@@ -64,13 +65,17 @@ if ($USER->instructor) {
             $out['msg'] = json_last_error_msg();
         } 
     }
-
-    $fp = fopen($filename, 'w');
-    fwrite($fp, json_encode($result));
-    fclose($fp);
 } else {
     $out['done'] = 0;
     $out['msg']  = 'Must be an instructor to complete this operation.';
 }
+
+// update output json file
+$result['msg'] = $out['msg'];
+$result['done'] = $out['done'];
+
+$fp = fopen($filename, 'w');
+fwrite($fp, json_encode($result));
+fclose($fp);
 
 echo json_encode($out);

@@ -255,8 +255,8 @@ $OUTPUT->footerStart();
                 if (result['done'] === 1) {
                     $('#' + a).html('<i class="fa fa-check"></i> Refreshing page ...');
 
-                    // post refresh
-                    parent.postMessage(JSON.stringify({ subject: "lti.pageRefresh" }), "*");
+                    // post refresh    
+                    setTimeout(function() { parent.postMessage(JSON.stringify({ subject: "lti.pageRefresh" }), "*"); }, 3000);                    
                 } else {
                     showError(a);
                 }
