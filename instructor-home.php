@@ -92,11 +92,8 @@ if (!$USER->instructor) {
                     </div-->
 
 		            <div class="row" style="margin-top: 1em;">
-                        <div class="col-md-3 hidden-sm hidden-xs">
-                            <label>Series Organizer</label>
-                        </div>
-                        <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
-                            <label>Series Organizer</label>
+                        <div class="col-md-3 col-xs-12 col-sm-11">
+                            <label for="organizer">Series Organizer</label>
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                             <input type="text" name="organizer" id="organizer" disabled="true" class="form-control disabled" value="<?= $context['email'] ?> (<?= $context['user'] ?>)"/>
@@ -107,11 +104,8 @@ if (!$USER->instructor) {
                     if (count($context['providers']) > 1) {
                 ?>
                         <div class="row">
-                            <div class="col-md-3 hidden-sm hidden-xs">
-                                <label for="presenters">Primary Course</label>
-                            </div>
-                            <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
-                                <label for="presenters">Primary Course</label>
+                            <div class="col-md-3 col-xs-12 col-sm-11">
+                                <label for="provider">Primary Course</label>
                             </div>
                             <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                                 <select class="form-control" name="provider" id="provider">
@@ -129,11 +123,8 @@ if (!$USER->instructor) {
                     }
                 ?>
                     <div class="row">
-                        <div class="col-md-3 hidden-sm hidden-xs">
-                            <label>Publish recordings to</label>
-                        </div>
-                        <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
-                            <label>Publish recordings to</label>
+                        <div class="col-md-3 col-xs-12 col-sm-11">
+                            <label for="visibility">Publish recordings to</label>
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                             <label class="radio-inline">
@@ -158,10 +149,7 @@ if (!$USER->instructor) {
                         </div>
                     </div-->
                     <div class="row">
-                        <div class="col-md-3 hidden-sm hidden-xs">
-                            <label for="presenters">Presenter(s)</label>
-                        </div>
-                        <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
+                    <div class="col-md-3 col-xs-12 col-sm-11">
                             <label for="presenters">Presenter(s)</label>
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
@@ -170,22 +158,16 @@ if (!$USER->instructor) {
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3 hidden-sm hidden-xs">
-                            <label for="presenters">Email Notifications</label>
-                        </div>
-                        <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
-                            <label for="presenters">Email Notifications</label>
+                        <div class="col-md-3 col-xs-12 col-sm-11">
+                            <label for="notifications">Email Notifications</label>
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                             <textarea class="form-control" name="notifications" id="notifications" placeholder="Additional email addresses to receive scheduling notifications for this series"></textarea>
                         </div>
                     </div>
                     <div class="row terms">
-                        <div class="col-md-3 hidden-sm hidden-xs">
-                            <label>My Responsibilities</label>
-                        </div>
-                        <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
-                            <label>My Responsibilities</label>
+                        <div class="col-md-3 col-xs-12 col-sm-11">
+                            <label for="terms">My Responsibilities</label>
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                             <label class="checkbox-inline">

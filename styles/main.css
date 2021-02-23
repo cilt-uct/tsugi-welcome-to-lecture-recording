@@ -46,14 +46,20 @@ section h3 {
   margin-bottom: 0.8em;
 }
 
-#metadata div.col-md-3 label {
-  margin-top: 0.5em;
+#metadata .row > div:first-child label {
+    display: block;
+    text-align: right;
+    margin-top: 0.3em;
+}
+ 
+@media (max-width: 767px) {
+    #metadata .row > div.col-md-3:first-child label {
+        margin-top: 0.5em;
+        display: block;
+        text-align: left;
+    }
 }
 
-#metadata .row >div:first-child label {
-  display: block;
-  text-align: right;
-}
 
 #metadata input[type=text].form-control, #metadata textarea.form-control {
   width: 80%;
