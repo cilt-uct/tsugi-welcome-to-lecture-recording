@@ -10,8 +10,8 @@ header('Content-Type: application/json');
 $LAUNCH = LTIX::requireData();
 
 $result = array_merge(array( 
-    'ext_sakai_server' => $LAUNCH->ltiRawParameter('ext_sakai_server','none')
-    ,'ext_sakai_serverid' => $LAUNCH->ltiRawParameter('ext_sakai_serverid','none') 
+    'server_url' => $LAUNCH->ltiRawParameter('ext_sakai_server','none')
+    ,'server_id' => $LAUNCH->ltiRawParameter('ext_sakai_serverid','none') 
     ,'instructor' => $USER->instructor
     ,'siteid' => $LAUNCH->ltiRawParameter('context_id','none')
     ,'ownerEid' => $LAUNCH->ltiRawParameter('lis_person_sourcedid','none') 
@@ -28,6 +28,11 @@ $result = array_merge(array(
 
 if ($result['course'] == 'none') {
     $result['course'] = '';
+}
+
+if($result['server_url'] == 'none' && $result['server_id'] == 'none') {
+    $result['server_url'] = 'https://amathuba.uct.ac.za';
+    $result['server_id'] = '';
 }
 
 $out = array(
@@ -48,7 +53,7 @@ if ($USER->instructor) {
             $cmd = $tool['script-add'] .' '. $filename;
             break;
         case "remove":
-            $cmd = $tool['script-remove'] .' '. $result['ext_sakai_server'] .' '. $result['siteid'];
+            $cmd = $tool['script-remove'] .' '. $result['server_url'] .' '. $result['siteid'];
         default: break;
     }
 
