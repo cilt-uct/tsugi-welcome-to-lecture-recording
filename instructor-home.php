@@ -28,7 +28,7 @@ if (!$USER->instructor) {
 
     if($LAUNCH->ltiRawParameter('ext_sakai_server','none') == 'none' && strpos($LAUNCH->ltiRawParameter('lis_outcome_service_url'), 'amathuba') == true) {
         $context['server_url'] = 'https://amathuba.uct.ac.za';
-        $providers  = $LAUNCH->ltiRawParameter('context_title','none');
+        $providers  = $LAUNCH->ltiRawParameter('context_label','none');
     }  else{
         $context['server_url'] = $LAUNCH->ltiRawParameter('ext_sakai_server','none');
         $context['server_id']  = $LAUNCH->ltiRawParameter('ext_sakai_serverid','none');
