@@ -9,9 +9,17 @@ header('Content-Type: application/json');
 // Retrieve the launch data if present
 $LAUNCH = LTIX::requireData();
 
+if($LAUNCH->ltiRawParameter('ext_sakai_server','none') == 'none' && strpos($LAUNCH->ltiRawParameter('lis_outcome_service_url'), 'amathuba') == true) {
+    $server_url = 'https://amathuba.uct.ac.za';
+    $server_id = '';
+}  else{
+    $server_url = $LAUNCH->ltiRawParameter('ext_sakai_server');
+    $server_id  = $LAUNCH->ltiRawParameter('ext_sakai_serverid','none');
+} 
+
 $result = array_merge(array( 
-    'server_url' => $LAUNCH->ltiRawParameter('ext_sakai_server','none')
-    ,'server_id' => $LAUNCH->ltiRawParameter('ext_sakai_serverid','none') 
+    'server_url' => $server_url
+    ,'server_id' => $server_id 
     ,'instructor' => $USER->instructor
     ,'siteid' => $LAUNCH->ltiRawParameter('context_id','none')
     ,'ownerEid' => $LAUNCH->ltiRawParameter('lis_person_sourcedid','none') 
@@ -28,11 +36,6 @@ $result = array_merge(array(
 
 if ($result['course'] == 'none') {
     $result['course'] = '';
-}
-
-if($result['server_url'] == 'none' && $result['server_id'] == 'none') {
-    $result['server_url'] = 'https://amathuba.uct.ac.za';
-    $result['server_id'] = '';
 }
 
 $out = array(
