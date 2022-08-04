@@ -26,6 +26,15 @@ if (!$USER->instructor) {
     $providers  = $LAUNCH->ltiRawParameter('lis_course_section_sourcedid','none');
     $context_id = $LAUNCH->ltiRawParameter('context_id','none');
 
+    if($LAUNCH->ltiRawParameter('ext_sakai_server','none') == 'none' && strpos($LAUNCH->ltiRawParameter('lis_outcome_service_url'), 'amathuba') == true) {
+        $context['server_url'] = 'https://amathuba.uct.ac.za';
+        $providers  = $LAUNCH->ltiRawParameter('context_title','none');
+    }  else{
+        $context['server_url'] = $LAUNCH->ltiRawParameter('ext_sakai_server','none');
+        $context['server_id']  = $LAUNCH->ltiRawParameter('ext_sakai_serverid','none');
+    } 
+
+
     $context['providers'] = array();
     $context['provider'] = 'none';
     
@@ -74,8 +83,8 @@ if (!$USER->instructor) {
     $context['oauth_callback'] = $LAUNCH->ltiRawParameter('oauth_callback','none');
     $context['oauth_signature'] = $LAUNCH->ltiRawParameter('oauth_signature','none');
     $context['ext_basiclti_submit'] = $LAUNCH->ltiRawParameter('ext_basiclti_submit','none');
-    $context['site_id'] = $LAUNCH->ltiRawParameter('context_label','none');
-    $context['course'] = $LAUNCH->ltiRawParameter('context_id','none');
+    $context['site_id'] = $LAUNCH->ltiRawParameter('context_id','none');
+    $context['course'] = $LAUNCH->ltiRawParameter('context_label','none');
     $context['email'] = $USER->email;
     $context['user'] = $USER->displayname;
     $context['submit'] = addSession( str_replace("\\","/",$CFG->getCurrentFileUrl('process.php')) );
@@ -163,8 +172,18 @@ if (!$USER->instructor) {
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
                             <label class="radio-inline">
-                                <input type="radio" name="visibility" id="courseClosed" value="closed" checked>
-                                This Vula site only
+                                <?php
+                                if($context['server_url'] == 'https://amathuba.uct.ac.za') {
+                                    print '<input type="radio" name="visibility" id="courseClosed" value="closed" data-name="Amathuba site only" checked>';
+                                    print "This Amathuba site only";
+                                } else if($context['server_url'] == 'https://vuladev.uct.ac.za' || $context['server_url'] == 'https://vula.uct.ac.za'){
+                                    print '<input type="radio" name="visibility" id="courseClosed" value="closed" data-name="Vula site only" checked>';
+                                    print "This Vula site only";
+                                } else {
+                                    print '<input type="radio" name="visibility" id="courseClosed" value="closed" data-name="Tsugi site only" checked>';
+                                    print "This site only";
+                                }
+                                ?>
                             </label>
                             <label class="radio-inline">
                                 <input type="radio" name="visibility" id="coursePublic" value="public">
@@ -259,7 +278,7 @@ $OUTPUT->footerStart();
             var data = { 
                 "type": type,
                 "terms": ($('#terms').is(':checked') ? "accept" : "rejected"),
-                "visibility": ($('#coursePublic').is(':checked') ? "Public" : "Vula site only"),
+                "visibility": $("input[name='visibility']:checked").data('name'),
                 "subject": '',
                 "contributor": (contributor.endsWith(', ') ? contributor.substring(0, contributor.length-2) : contributor),
                 "course": $('#provider').val(),
