@@ -1,4 +1,5 @@
 <?php
+
 require_once('../config.php');
 include 'tool-config.php';
 
@@ -6,20 +7,26 @@ use \Tsugi\Core\LTIX;
 
 header('Content-Type: application/json');
 
+ini_set('max_execution_time', 0); // 0 = Unlimited
+
 // Retrieve the launch data if present
 $LAUNCH = LTIX::requireData();
 
-if($LAUNCH->ltiRawParameter('ext_sakai_server','none') == 'none' && strpos($LAUNCH->ltiRawParameter('lis_outcome_service_url'), 'amathuba') == true) {
-    $server_url = 'https://amathuba.uct.ac.za';
-    $server_id = '';
-}  else{
-    $server_url = $LAUNCH->ltiRawParameter('ext_sakai_server');
-    $server_id  = $LAUNCH->ltiRawParameter('ext_sakai_serverid','none');
+$server_url = $LAUNCH->ltiRawParameter('ext_sakai_server','none');
+$server_id  = $LAUNCH->ltiRawParameter('ext_sakai_serverid','none');
+
+if ($LAUNCH->ltiRawParameter('tool_consumer_info_product_family_code','none') == 'desire2learn') {
+    $providers  = $LAUNCH->ltiRawParameter('context_label','none');
+
+    $parts = parse_url($LAUNCH->ltiRawParameter('lis_outcome_service_url','https://amathuba.uct.ac.za'));
+    $server_url = $parts['scheme'] .'://'. $parts['host'];
+    $server_id  = 'none';
 } 
 
-$result = array_merge(array( 
+$result = array_merge(array(
     'server_url' => $server_url
     ,'server_id' => $server_id 
+    ,'product_family_code' => $LAUNCH->ltiRawParameter('tool_consumer_info_product_family_code', 'none')
     ,'instructor' => $USER->instructor
     ,'siteid' => $LAUNCH->ltiRawParameter('context_id','none')
     ,'ownerEid' => $LAUNCH->ltiRawParameter('lis_person_sourcedid','none') 
@@ -62,16 +69,19 @@ if ($USER->instructor) {
 
     if (!is_null($cmd)) {
         $result['cmd'] = $cmd; 
-        $result['raw'] = shell_exec($cmd);
-        $result['out'] = json_decode($result['raw']);
+        $out['raw'] = shell_exec($cmd);
+        $out['cmd'] = exec($cmd);
 
-        if (json_last_error() === JSON_ERROR_NONE) { 
-            $out['msg'] = $result['out']->out;
-            $out['done'] = $result['out']->success;
-        } else {
-            $out['done'] = 0;
-            $out['msg'] = json_last_error_msg();
-        } 
+        // $result['raw'] = shell_exec($cmd);
+        // $result['out'] = json_decode($result['raw']);
+
+        // if (json_last_error() === JSON_ERROR_NONE) { 
+        //     $out['msg'] = $result['out']->out;
+        //     $out['done'] = $result['out']->success;
+        // } else {
+        //     $out['done'] = 0;
+        //     $out['msg'] = 'JSON: ' . json_last_error_msg();
+        // } 
     }
 } else {
     $out['done'] = 0;

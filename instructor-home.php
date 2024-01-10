@@ -1,4 +1,8 @@
 <?php
+
+phpinfo();
+exit;
+
 require_once('../config.php');
 include 'tool-config.php';
 
@@ -26,12 +30,17 @@ if (!$USER->instructor) {
     $providers  = $LAUNCH->ltiRawParameter('lis_course_section_sourcedid','none');
     $context_id = $LAUNCH->ltiRawParameter('context_id','none');
 
-    if($LAUNCH->ltiRawParameter('ext_sakai_server','none') == 'none' && strpos($LAUNCH->ltiRawParameter('lis_outcome_service_url'), 'amathuba') == true) {
-        $context['server_url'] = 'https://amathuba.uct.ac.za';
+    $context['product_family_code'] = $LAUNCH->ltiRawParameter('tool_consumer_info_product_family_code', 'none');
+
+    if($LAUNCH->ltiRawParameter('tool_consumer_info_product_family_code','none') == 'desire2learn') {
         $providers  = $LAUNCH->ltiRawParameter('context_label','none');
-    }  else{
+
+        $parts = parse_url($LAUNCH->ltiRawParameter('lis_outcome_service_url','https://amathuba.uct.ac.za'));
+        $context['server_url'] = $parts['scheme'] .'://'. $parts['host'];
+        $context['server_id'] = 'none';
+    } else {
         $context['server_url'] = $LAUNCH->ltiRawParameter('ext_sakai_server','none');
-        $context['server_id']  = $LAUNCH->ltiRawParameter('ext_sakai_serverid','none');
+        $context['server_id'] = $LAUNCH->ltiRawParameter('ext_sakai_serverid','none');
     } 
 
 
@@ -95,7 +104,7 @@ if (!$USER->instructor) {
 ?>
     <section>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-sm-12">
                 <h3>Set up a new recording series</h3>
             </div>
         </div>
@@ -110,7 +119,11 @@ if (!$USER->instructor) {
                 </ol>
                 <p>
                     Need more info <span class="glyphicon glyphicon-question-sign"></span>
+                    <?php
+                        if ($context['product_family_code'] == 'sakai') { 
+                    ?>
                     <a href="https://vula.uct.ac.za/access/content/public/help/HowTo_SetupLectureRecording.pdf" title="How to set up my lecture recordings" target="_blank">Setup guide</a>,
+                    <?php } ?>
                     <a href="http://ictsapps.uct.ac.za/lectureRecording.php" target="_blank" title="Venues equipped for lecture recording">venue information</a>,
                     <a href="http://www.cilt.uct.ac.za/cilt/lecture-recording/" target="_blank" title="More about lecture recording at UCT">lecture recording at UCT</a>.
                 </p>
@@ -136,22 +149,21 @@ if (!$USER->instructor) {
                     </div-->
 
 		            <div class="row" style="margin-top: 1em;">
-                        <div class="col-md-3 col-xs-12 col-sm-11">
+                        <div class="col-md-3 col-sm-12">
                             <label for="organizer">Series Organizer</label>
                         </div>
-                        <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
+                        <div class="col-md-8 col-sm-12 col-md-offset-0">
                             <input type="text" name="organizer" id="organizer" disabled="true" class="form-control disabled" value="<?= $context['email'] ?> (<?= $context['user'] ?>)"/>
                         </div>
                     </div>
                 <?php
-
                     if (count($context['providers']) > 1) {
                 ?>
                         <div class="row">
-                            <div class="col-md-3 col-xs-12 col-sm-11">
+                            <div class="col-md-3 col-sm-12">
                                 <label for="provider">Primary Course</label>
                             </div>
-                            <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
+                            <div class="col-md-8 col-sm-12 col-md-offset-0">
                                 <select class="form-control" name="provider" id="provider">
                                 <?php
                                     foreach ($context['providers'] as $p) {
@@ -167,16 +179,16 @@ if (!$USER->instructor) {
                     }
                 ?>
                     <div class="row">
-                        <div class="col-md-3 col-xs-12 col-sm-11">
+                        <div class="col-md-3 col-sm-12">
                             <label for="visibility">Publish recordings to</label>
                         </div>
-                        <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
+                        <div class="col-md-8 col-sm-12 col-md-offset-0">
                             <label class="radio-inline">
                                 <?php
-                                if($context['server_url'] == 'https://amathuba.uct.ac.za') {
+                                if ($context['product_family_code'] == 'desire2learn') { 
                                     print '<input type="radio" name="visibility" id="courseClosed" value="closed" data-name="Amathuba site only" checked>';
                                     print "This Amathuba site only";
-                                } else if($context['server_url'] == 'https://vuladev.uct.ac.za' || $context['server_url'] == 'https://vula.uct.ac.za'){
+                                } else if ($context['product_family_code'] == 'sakai') { 
                                     print '<input type="radio" name="visibility" id="courseClosed" value="closed" data-name="Vula site only" checked>';
                                     print "This Vula site only";
                                 } else {
@@ -191,39 +203,28 @@ if (!$USER->instructor) {
                             </label>
                         </div>
                     </div>
-                    <!--div class="row">
-                        <div class="col-md-3 hidden-sm hidden-xs">
-                            <label for="subject">Subject</label>
-                        </div>
-                        <div class="col-xs-12 col-sm-11 hidden-md hidden-lg">
-                            <label for="subject">Subject</label>
-                        </div>
-                        <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
-                            <input type="text" class="form-control" name="subject" id="subject" value=""/>
-                        </div>
-                    </div-->
                     <div class="row">
-                    <div class="col-md-3 col-xs-12 col-sm-11">
+                        <div class="col-md-3 col-sm-12">
                             <label for="presenters">Presenter(s)</label>
                         </div>
-                        <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
+                        <div class="col-md-8 col-sm-12 col-md-offset-0">
                             <textarea class="form-control" name="presenters" id="presenters" placeholder="Presenters for this course, one per line."><?= $context['user'] ?>
                             </textarea>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3 col-xs-12 col-sm-11">
+                        <div class="col-md-3 col-sm-12">
                             <label for="notifications">Email Notifications</label>
                         </div>
-                        <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
+                        <div class="col-md-8 col-sm-12 col-md-offset-0">
                             <textarea class="form-control" name="notifications" id="notifications" placeholder="Additional email addresses to receive scheduling notifications for this series"></textarea>
                         </div>
                     </div>
                     <div class="row terms">
-                        <div class="col-md-3 col-xs-12 col-sm-11">
+                        <div class="col-md-3 col-sm-12">
                             <label for="terms">My Responsibilities</label>
                         </div>
-                        <div class="col-md-8 col-xs-12 col-sm-11 col-md-offset-0">
+                        <div class="col-md-8 col-sm-12 col-md-offset-0">
                             <label class="checkbox-inline">
                                 <input type="checkbox" id="terms" name="terms" value="accept" /> 
                                 As the Series Organizer, I undertake to: (1) <a href="http://www.cilt.uct.ac.za/cilt/lecture-recording" target="_blank">obtain recording consent</a> in advance from all presenters for all scheduled recordings, and (2) inform students and other participants that sessions are recorded.
@@ -231,7 +232,7 @@ if (!$USER->instructor) {
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12">
+                        <div class="col-sm-12">
                             <button id="btnAccept" class="btn btn-success disabled" disabled="true" type="button">
                                 <i class="fa fa-check"></i>
                                 Get Started
@@ -243,7 +244,7 @@ if (!$USER->instructor) {
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12" id="message"></div>
+                        <div class="col-sm-12" id="message"></div>
                     </div>
                 </form>
             </div>

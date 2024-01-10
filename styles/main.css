@@ -115,3 +115,9 @@ section h3 {
 .container_iframe .bg-info p {
   color: #333;
 }
+
+@media (min-width: 768px) {
+  #metadata .row > div.col-sm-12:first-child > label {
+    text-align: left;
+  }
+}
